@@ -19,7 +19,7 @@
   (kmeans.fit img-array)
   kmeans)
 
-(defn cluster [req] ())
+(defn cluster [req] req.rawBody)
 ; placeholder
 
 
