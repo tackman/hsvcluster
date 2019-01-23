@@ -3,11 +3,13 @@
 (import sklearn)
 (import sklearn.cluster)
 (import numpy)
+(import json)
 
 (defn image-path [] "sample.jpg")
 (defn loadLocal [rawData] (cv2.imread (image-path)))
+(defn loadBinary [rawData] (cv2.imdecode rawData cv2.IMREAD_COLOR))
 
-(setv load loadLocal)
+(setv load loadBinary)
 
 (defn toHsv [img]
   (cv2.cvtColor img cv2.COLOR_BGR2HSV))
@@ -19,9 +21,7 @@
   (kmeans.fit img-array)
   kmeans)
 
-(defn cluster [req] req.rawBody)
-; placeholder
-
-
-(setv kv (runHsvCluster (load "placeholder")))
-(print kv.cluster_centers_)
+(defn cluster [req] 
+  (setv kv (runHsvCluster (load (req.gget_data))))
+  (json.dumps kv.cluster_centers_)
+)

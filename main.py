@@ -3,6 +3,7 @@ import sys
 import sklearn
 import sklearn.cluster
 import numpy
+import json
 
 
 def image_path():
@@ -13,7 +14,11 @@ def loadLocal(rawData):
     return cv2.imread(image_path())
 
 
-load = loadLocal
+def loadBinary(rawData):
+    return cv2.imdecode(rawData, cv2.IMREAD_COLOR)
+
+
+load = loadBinary
 
 
 def toHsv(img):
@@ -29,9 +34,6 @@ def runHsvCluster(image_data):
 
 
 def cluster(req):
-    return req.get_data()
-
-
-kv = runHsvCluster(load('placeholder'))
-print(kv.cluster_centers_)
+    kv = runHsvCluster(load(req.gget_data()))
+    return json.dumps(kv.cluster_centers_)
 
